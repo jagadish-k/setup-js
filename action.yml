@@ -1,7 +1,7 @@
 name: "Common JS Steps"
 description: "Checkout code, setup Node and install dependencies using yarn"
 
-secrets:
+inputs:
   token:
     description: 'Specify token for access to resources.'
     required: true
@@ -12,14 +12,14 @@ runs:
       - name: Checkout Code
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.token }}
+          token: ${{ inputs.token }}
 
       - name: 'Setup Node.js'
         uses: actions/setup-node@v3
         with:
           node-version: 16
           registry-url: https://npm.pkg.github.com
-          token: ${{ secrets.token }}
+          token: ${{ inputs.token }}
       
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
