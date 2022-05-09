@@ -9,6 +9,11 @@ inputs:
   token:
     description: 'Specify token for access to resources.'
     required: true
+  
+  branch:
+    description: 'Branch to operate upon. Defaults to `main`'
+    required: false
+    default: 'main'
 
 runs:
   using: "composite"
@@ -17,6 +22,7 @@ runs:
         uses: actions/checkout@v2
         with:
           token: ${{ inputs.token }}
+          ref: ${{ inputs.branch }}
 
       - name: 'Setup Node.js'
         uses: actions/setup-node@v3
