@@ -1,6 +1,10 @@
 name: "Common JS Steps"
 description: "Checkout code, setup Node and install dependencies using yarn"
 
+branding:
+  icon: activity
+  color: gray-dark
+  
 inputs:
   token:
     description: 'Specify token for access to resources.'
