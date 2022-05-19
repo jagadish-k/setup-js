@@ -18,12 +18,12 @@ inputs:
   skip-install:
     description: 'Skip installing npm dependencies ? defaults to `false`'
     required: false
-    default: 'false'
+    default: false
 
   skip-build:
     description: 'Skip the build step ? defaults to `false`'
     required: false
-    default: 'false'
+    default: false
   
 
 runs:
@@ -57,12 +57,12 @@ runs:
             
       - name: Install npm dependencies
         run: yarn install --immutable --immutable-cache --check-cache
-        if: ${{ inputs.skip-install == 'false' }}
+        if: ${{ inputs.skip-install == false }}
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ inputs.token }}
         
       - name: Build
-        if: ${{ inputs.skip-build == 'false' }}
+        if: ${{ inputs.skip-build == false }}
         shell: bash
         run: NODE_ENV=production yarn build
