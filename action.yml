@@ -38,6 +38,7 @@ runs:
       - name: 'Setup Node.js'
         uses: actions/setup-node@v3
         with:
+          cache: 'yarn'
           node-version: 16
           registry-url: https://npm.pkg.github.com
           token: ${{ inputs.token }}
@@ -49,15 +50,24 @@ runs:
 
       - uses: actions/cache@v3
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        env:
+          cache-name: cache-node-modules
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-${{ env.cache-name }}-
+            ${{ runner.os }}-
+      
+      - if: ${{ steps.yarn-cache.outputs.cache-hit == false }}
+        name: List the state of node modules
+        continue-on-error: true
+        shell: bash
+        run: yarn list
             
       - name: Install npm dependencies
         run: yarn install --immutable --immutable-cache --check-cache
-        if: ${{ inputs.skip-install == 'false' }}
+        if: ${{ steps.yarn-cache.outputs.cache-hit != 'true' && inputs.skip-install == 'false' }}
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ inputs.token }}
