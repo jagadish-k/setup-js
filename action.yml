@@ -67,7 +67,7 @@ runs:
             
       - name: Install npm dependencies
         run: yarn install --immutable --immutable-cache --check-cache
-        if: ${{ steps.yarn-cache.outputs.cache-hit != 'true' && inputs.skip-install == 'false' }}
+        # if: ${{ steps.yarn-cache.outputs.cache-hit != 'true' && inputs.skip-install == 'false' }}
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ inputs.token }}
