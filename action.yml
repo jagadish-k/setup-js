@@ -43,31 +43,29 @@ runs:
           registry-url: https://npm.pkg.github.com
           token: ${{ inputs.token }}
       
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-        shell: bash
+      # - name: Get yarn cache directory path
+      #   id: yarn-cache-dir-path
+      #   run: echo "::set-output name=dir::$(yarn cache dir)"
+      #   shell: bash
 
-      - uses: actions/cache@v3
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ env.cache-name }}-
-            ${{ runner.os }}-
+      # - uses: actions/cache@v3
+      #   id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+      #   env:
+      #     cache-name: cache-node-modules
+      #   with:
+      #     path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+      #     key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-${{ env.cache-name }}-
+      #       ${{ runner.os }}-
       
-      - if: ${{ steps.yarn-cache.outputs.cache-hit == false }}
-        name: List the state of node modules
+      - name: List the state of node modules
         continue-on-error: true
         shell: bash
         run: yarn list
             
       - name: Install npm dependencies
         run: yarn install --immutable --immutable-cache --check-cache
-        # if: ${{ steps.yarn-cache.outputs.cache-hit != 'true' && inputs.skip-install == 'false' }}
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ inputs.token }}
