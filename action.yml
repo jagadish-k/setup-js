@@ -59,10 +59,10 @@ runs:
       #       ${{ runner.os }}-${{ env.cache-name }}-
       #       ${{ runner.os }}-
       
-      - name: List the state of node modules
-        continue-on-error: true
-        shell: bash
-        run: yarn list
+      # - name: List the state of node modules
+      #   continue-on-error: true
+      #   shell: bash
+      #   run: yarn list
             
       - name: Install npm dependencies
         run: yarn install --immutable --immutable-cache --check-cache
