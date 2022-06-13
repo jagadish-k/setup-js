@@ -38,7 +38,6 @@ runs:
       - name: 'Setup Node.js'
         uses: actions/setup-node@v3
         with:
-          cache: 'yarn'
           node-version: 16
           registry-url: https://npm.pkg.github.com
           token: ${{ inputs.token }}
